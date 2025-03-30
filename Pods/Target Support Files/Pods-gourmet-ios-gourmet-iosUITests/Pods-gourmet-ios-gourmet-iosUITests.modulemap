@@ -1,0 +1,6 @@
+framework module Pods_gourmet_ios_gourmet_iosUITests {
+  umbrella header "Pods-gourmet-ios-gourmet-iosUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

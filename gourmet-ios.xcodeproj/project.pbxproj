@@ -1,0 +1,674 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		A8E2ED0E2D98E75D00A3A7C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A8E2ECEF2D98E75B00A3A7C5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A8E2ECF62D98E75B00A3A7C5;
+			remoteInfo = "gourmet-ios";
+		};
+		A8E2ED182D98E75D00A3A7C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A8E2ECEF2D98E75B00A3A7C5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A8E2ECF62D98E75B00A3A7C5;
+			remoteInfo = "gourmet-ios";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0AFD09BD80281BE84D6CB3C8 /* Pods-gourmet-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gourmet-ios.debug.xcconfig"; path = "Target Support Files/Pods-gourmet-ios/Pods-gourmet-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		0F26EC6B5EF2AFFFAC02C538 /* Pods-gourmet-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gourmet-iosTests.debug.xcconfig"; path = "Target Support Files/Pods-gourmet-iosTests/Pods-gourmet-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5EBB3A2DD942A5C0EF8A238B /* Pods-gourmet-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gourmet-ios.release.xcconfig"; path = "Target Support Files/Pods-gourmet-ios/Pods-gourmet-ios.release.xcconfig"; sourceTree = "<group>"; };
+		63DF4B8F9191388878CCAE10 /* Pods-gourmet-iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gourmet-iosTests.release.xcconfig"; path = "Target Support Files/Pods-gourmet-iosTests/Pods-gourmet-iosTests.release.xcconfig"; sourceTree = "<group>"; };
+		A8E2ECF72D98E75B00A3A7C5 /* gourmet-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gourmet-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8E2ED0D2D98E75D00A3A7C5 /* gourmet-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "gourmet-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8E2ED172D98E75D00A3A7C5 /* gourmet-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "gourmet-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C104E10EC746FF57D0918EEB /* Pods-gourmet-ios-gourmet-iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gourmet-ios-gourmet-iosUITests.debug.xcconfig"; path = "Target Support Files/Pods-gourmet-ios-gourmet-iosUITests/Pods-gourmet-ios-gourmet-iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D41146F6E7A09B31333E585D /* Pods-gourmet-ios-gourmet-iosUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gourmet-ios-gourmet-iosUITests.release.xcconfig"; path = "Target Support Files/Pods-gourmet-ios-gourmet-iosUITests/Pods-gourmet-ios-gourmet-iosUITests.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A8E2ED1F2D98E75D00A3A7C5 /* Exceptions for "gourmet-ios" folder in "gourmet-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A8E2ECF62D98E75B00A3A7C5 /* gourmet-ios */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A8E2ECF92D98E75B00A3A7C5 /* gourmet-ios */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A8E2ED1F2D98E75D00A3A7C5 /* Exceptions for "gourmet-ios" folder in "gourmet-ios" target */,
+			);
+			path = "gourmet-ios";
+			sourceTree = "<group>";
+		};
+		A8E2ED102D98E75D00A3A7C5 /* gourmet-iosTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "gourmet-iosTests";
+			sourceTree = "<group>";
+		};
+		A8E2ED1A2D98E75D00A3A7C5 /* gourmet-iosUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "gourmet-iosUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A8E2ECF42D98E75B00A3A7C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8E2ED0A2D98E75D00A3A7C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8E2ED142D98E75D00A3A7C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		15DCA2D2F14F8AE50AA077D6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD09BD80281BE84D6CB3C8 /* Pods-gourmet-ios.debug.xcconfig */,
+				5EBB3A2DD942A5C0EF8A238B /* Pods-gourmet-ios.release.xcconfig */,
+				C104E10EC746FF57D0918EEB /* Pods-gourmet-ios-gourmet-iosUITests.debug.xcconfig */,
+				D41146F6E7A09B31333E585D /* Pods-gourmet-ios-gourmet-iosUITests.release.xcconfig */,
+				0F26EC6B5EF2AFFFAC02C538 /* Pods-gourmet-iosTests.debug.xcconfig */,
+				63DF4B8F9191388878CCAE10 /* Pods-gourmet-iosTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		5F36230FB63210740CC1C8C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A8E2ECEE2D98E75B00A3A7C5 = {
+			isa = PBXGroup;
+			children = (
+				A8E2ECF92D98E75B00A3A7C5 /* gourmet-ios */,
+				A8E2ED102D98E75D00A3A7C5 /* gourmet-iosTests */,
+				A8E2ED1A2D98E75D00A3A7C5 /* gourmet-iosUITests */,
+				A8E2ECF82D98E75B00A3A7C5 /* Products */,
+				15DCA2D2F14F8AE50AA077D6 /* Pods */,
+				5F36230FB63210740CC1C8C8 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A8E2ECF82D98E75B00A3A7C5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A8E2ECF72D98E75B00A3A7C5 /* gourmet-ios.app */,
+				A8E2ED0D2D98E75D00A3A7C5 /* gourmet-iosTests.xctest */,
+				A8E2ED172D98E75D00A3A7C5 /* gourmet-iosUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A8E2ECF62D98E75B00A3A7C5 /* gourmet-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A8E2ED202D98E75D00A3A7C5 /* Build configuration list for PBXNativeTarget "gourmet-ios" */;
+			buildPhases = (
+				8A794D986E85B8650C7257D2 /* [CP] Check Pods Manifest.lock */,
+				A8E2ECF32D98E75B00A3A7C5 /* Sources */,
+				A8E2ECF42D98E75B00A3A7C5 /* Frameworks */,
+				A8E2ECF52D98E75B00A3A7C5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A8E2ECF92D98E75B00A3A7C5 /* gourmet-ios */,
+			);
+			name = "gourmet-ios";
+			productName = "gourmet-ios";
+			productReference = A8E2ECF72D98E75B00A3A7C5 /* gourmet-ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A8E2ED0C2D98E75D00A3A7C5 /* gourmet-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A8E2ED252D98E75D00A3A7C5 /* Build configuration list for PBXNativeTarget "gourmet-iosTests" */;
+			buildPhases = (
+				074CB820F00C2257EC9DEE32 /* [CP] Check Pods Manifest.lock */,
+				A8E2ED092D98E75D00A3A7C5 /* Sources */,
+				A8E2ED0A2D98E75D00A3A7C5 /* Frameworks */,
+				A8E2ED0B2D98E75D00A3A7C5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A8E2ED0F2D98E75D00A3A7C5 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A8E2ED102D98E75D00A3A7C5 /* gourmet-iosTests */,
+			);
+			name = "gourmet-iosTests";
+			productName = "gourmet-iosTests";
+			productReference = A8E2ED0D2D98E75D00A3A7C5 /* gourmet-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A8E2ED162D98E75D00A3A7C5 /* gourmet-iosUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A8E2ED282D98E75D00A3A7C5 /* Build configuration list for PBXNativeTarget "gourmet-iosUITests" */;
+			buildPhases = (
+				7842A97CE0B0AE96D65FC18D /* [CP] Check Pods Manifest.lock */,
+				A8E2ED132D98E75D00A3A7C5 /* Sources */,
+				A8E2ED142D98E75D00A3A7C5 /* Frameworks */,
+				A8E2ED152D98E75D00A3A7C5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A8E2ED192D98E75D00A3A7C5 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A8E2ED1A2D98E75D00A3A7C5 /* gourmet-iosUITests */,
+			);
+			name = "gourmet-iosUITests";
+			productName = "gourmet-iosUITests";
+			productReference = A8E2ED172D98E75D00A3A7C5 /* gourmet-iosUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A8E2ECEF2D98E75B00A3A7C5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					A8E2ECF62D98E75B00A3A7C5 = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					A8E2ED0C2D98E75D00A3A7C5 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = A8E2ECF62D98E75B00A3A7C5;
+					};
+					A8E2ED162D98E75D00A3A7C5 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = A8E2ECF62D98E75B00A3A7C5;
+					};
+				};
+			};
+			buildConfigurationList = A8E2ECF22D98E75B00A3A7C5 /* Build configuration list for PBXProject "gourmet-ios" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A8E2ECEE2D98E75B00A3A7C5;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A8E2ECF82D98E75B00A3A7C5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A8E2ECF62D98E75B00A3A7C5 /* gourmet-ios */,
+				A8E2ED0C2D98E75D00A3A7C5 /* gourmet-iosTests */,
+				A8E2ED162D98E75D00A3A7C5 /* gourmet-iosUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A8E2ECF52D98E75B00A3A7C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8E2ED0B2D98E75D00A3A7C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8E2ED152D98E75D00A3A7C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		074CB820F00C2257EC9DEE32 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-gourmet-iosTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7842A97CE0B0AE96D65FC18D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-gourmet-ios-gourmet-iosUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8A794D986E85B8650C7257D2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-gourmet-ios-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A8E2ECF32D98E75B00A3A7C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8E2ED092D98E75D00A3A7C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8E2ED132D98E75D00A3A7C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A8E2ED0F2D98E75D00A3A7C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A8E2ECF62D98E75B00A3A7C5 /* gourmet-ios */;
+			targetProxy = A8E2ED0E2D98E75D00A3A7C5 /* PBXContainerItemProxy */;
+		};
+		A8E2ED192D98E75D00A3A7C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A8E2ECF62D98E75B00A3A7C5 /* gourmet-ios */;
+			targetProxy = A8E2ED182D98E75D00A3A7C5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A8E2ED212D98E75D00A3A7C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0AFD09BD80281BE84D6CB3C8 /* Pods-gourmet-ios.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X5A235B5PH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "gourmet-ios/Info.plist";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abin.gourmet-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A8E2ED222D98E75D00A3A7C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5EBB3A2DD942A5C0EF8A238B /* Pods-gourmet-ios.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X5A235B5PH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "gourmet-ios/Info.plist";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abin.gourmet-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A8E2ED232D98E75D00A3A7C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A8E2ED242D98E75D00A3A7C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A8E2ED262D98E75D00A3A7C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0F26EC6B5EF2AFFFAC02C538 /* Pods-gourmet-iosTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X5A235B5PH;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abin.gourmet-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gourmet-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/gourmet-ios";
+			};
+			name = Debug;
+		};
+		A8E2ED272D98E75D00A3A7C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 63DF4B8F9191388878CCAE10 /* Pods-gourmet-iosTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X5A235B5PH;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abin.gourmet-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gourmet-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/gourmet-ios";
+			};
+			name = Release;
+		};
+		A8E2ED292D98E75D00A3A7C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C104E10EC746FF57D0918EEB /* Pods-gourmet-ios-gourmet-iosUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X5A235B5PH;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abin.gourmet-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "gourmet-ios";
+			};
+			name = Debug;
+		};
+		A8E2ED2A2D98E75D00A3A7C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D41146F6E7A09B31333E585D /* Pods-gourmet-ios-gourmet-iosUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X5A235B5PH;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abin.gourmet-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "gourmet-ios";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A8E2ECF22D98E75B00A3A7C5 /* Build configuration list for PBXProject "gourmet-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8E2ED232D98E75D00A3A7C5 /* Debug */,
+				A8E2ED242D98E75D00A3A7C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8E2ED202D98E75D00A3A7C5 /* Build configuration list for PBXNativeTarget "gourmet-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8E2ED212D98E75D00A3A7C5 /* Debug */,
+				A8E2ED222D98E75D00A3A7C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8E2ED252D98E75D00A3A7C5 /* Build configuration list for PBXNativeTarget "gourmet-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8E2ED262D98E75D00A3A7C5 /* Debug */,
+				A8E2ED272D98E75D00A3A7C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8E2ED282D98E75D00A3A7C5 /* Build configuration list for PBXNativeTarget "gourmet-iosUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8E2ED292D98E75D00A3A7C5 /* Debug */,
+				A8E2ED2A2D98E75D00A3A7C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A8E2ECEF2D98E75B00A3A7C5 /* Project object */;
+}
