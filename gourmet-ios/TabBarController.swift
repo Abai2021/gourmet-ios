@@ -7,6 +7,9 @@
 
 import UIKit
 
+// 添加自定义工具类的导入
+import Alamofire
+
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
     
     // 获取自定义TabBar
@@ -392,12 +395,12 @@ extension TabBarController: NavigationBarDelegate {
         // 创建侧边栏容器
         let sideMenuContainer = SideMenuContainerViewController(mainViewController: self)
         
-        // 设置用户信息（这里使用示例数据，实际应用中应从用户数据源获取）
-        sideMenuContainer.setUserInfo(
-            avatar: nil,
-            username: "美食达人",
-            userId: "888888"
-        )
+        // 不再需要设置用户信息，由 SideMenuViewController 自己处理
+        // sideMenuContainer.setUserInfo(
+        //     avatar: nil,
+        //     username: "请登录",
+        //     userId: "点击此处登录"
+        // )
         
         // 保存引用以便后续使用
         self.sideMenuContainer = sideMenuContainer

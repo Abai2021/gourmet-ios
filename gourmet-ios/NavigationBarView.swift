@@ -15,8 +15,10 @@ class NavigationBarView: UIView {
     
     weak var delegate: NavigationBarDelegate?
     
-    // 健康主题绿色
-    static let healthyGreen = UIColor(red: 76/255, green: 125/255, blue: 80/255, alpha: 1.0) // Material Design Green 500
+    static let healthyGreen = UIColor(red: 170/255, green: 240/255, blue: 200/255, alpha: 1.0)
+    // HEX: #AAF0C8
+
+
     
     // 头像按钮
     private lazy var avatarButton: UIButton = {

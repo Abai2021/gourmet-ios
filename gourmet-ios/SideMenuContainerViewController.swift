@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class SideMenuContainerViewController: UIViewController {
     
@@ -42,6 +43,10 @@ class SideMenuContainerViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupSideMenu()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func setupView() {
@@ -150,11 +155,6 @@ class SideMenuContainerViewController: UIViewController {
         default:
             break
         }
-    }
-    
-    // 设置用户信息
-    func setUserInfo(avatar: UIImage?, username: String, userId: String) {
-        sideMenuViewController.setUserInfo(avatar: avatar, username: username, userId: userId)
     }
 }
 
