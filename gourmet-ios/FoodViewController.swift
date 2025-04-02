@@ -35,7 +35,7 @@ struct Food: Codable {
     let evaluation: String?
     let image_url: String?
     let standard_calories: Int
-    let category: String?
+    let category: [FoodCategory]?
 }
 
 // 食物列表响应模型
@@ -342,11 +342,33 @@ extension FoodViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        // 处理搜索逻辑，这里暂时不实现
+        
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        
+        // 创建搜索结果视图控制器
+        let searchVC = FoodSearchViewController(keyword: searchText)
+        navigationController?.pushViewController(searchVC, animated: true)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // 处理搜索文本变化，这里暂时不实现
+        // 当用户清空搜索栏时，显示取消按钮
+        if searchText.isEmpty {
+            searchBar.setShowsCancelButton(true, animated: true)
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
     }
 }
 
@@ -669,6 +691,16 @@ class FoodCell: UITableViewCell {
         return label
     }()
     
+    // 分类标签
+    private let categoryLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .systemBlue
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     // 热量标签
     private let caloriesLabel: UILabel = {
         let label = UILabel()
@@ -694,6 +726,7 @@ class FoodCell: UITableViewCell {
         contentView.addSubview(foodImageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(evaluationLabel)
+        contentView.addSubview(categoryLabel)
         contentView.addSubview(caloriesLabel)
         
         // 设置约束
@@ -706,14 +739,19 @@ class FoodCell: UITableViewCell {
             
             // 食物名称约束
             nameLabel.leadingAnchor.constraint(equalTo: foodImageView.trailingAnchor, constant: 12),
-            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             nameLabel.trailingAnchor.constraint(equalTo: caloriesLabel.leadingAnchor, constant: -12),
             
             // 食物评价约束
             evaluationLabel.leadingAnchor.constraint(equalTo: foodImageView.trailingAnchor, constant: 12),
             evaluationLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
             evaluationLabel.trailingAnchor.constraint(equalTo: caloriesLabel.leadingAnchor, constant: -12),
-            evaluationLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16),
+            
+            // 分类标签约束
+            categoryLabel.leadingAnchor.constraint(equalTo: foodImageView.trailingAnchor, constant: 12),
+            categoryLabel.topAnchor.constraint(equalTo: evaluationLabel.bottomAnchor, constant: 4),
+            categoryLabel.trailingAnchor.constraint(equalTo: caloriesLabel.leadingAnchor, constant: -12),
+            categoryLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
             
             // 热量标签约束
             caloriesLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
@@ -745,6 +783,21 @@ class FoodCell: UITableViewCell {
                 }
             }.resume()
         }
+        
+        // 处理新分类结构
+        if let categories = food.category, !categories.isEmpty {
+            var categoryText = "分类: "
+            for (index, category) in categories.enumerated() {
+                categoryText += category.name
+                if index < categories.count - 1 {
+                    categoryText += ", "
+                }
+            }
+            categoryLabel.text = categoryText
+            categoryLabel.isHidden = false
+        } else {
+            categoryLabel.isHidden = true
+        }
     }
     
     override func prepareForReuse() {
@@ -752,6 +805,7 @@ class FoodCell: UITableViewCell {
         foodImageView.image = nil
         nameLabel.text = nil
         evaluationLabel.text = nil
+        categoryLabel.text = nil
         caloriesLabel.text = nil
     }
 }
@@ -779,6 +833,14 @@ class FoodDetailViewControllerImpl: UIViewController, FoodDetailViewControllerPr
         
         // 设置导航栏
         navigationController?.navigationBar.prefersLargeTitles = false
+        
+        // 添加返回按钮
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped)
+        )
         
         // 调整内容区域，避免被导航栏遮挡
         edgesForExtendedLayout = []
@@ -870,6 +932,17 @@ class FoodDetailViewControllerImpl: UIViewController, FoodDetailViewControllerPr
             nameLabel.text = foodDetail.name
             contentView.addSubview(nameLabel)
             lastView = nameLabel
+            
+            // 添加返回箭头按钮
+            let backButton = UIButton(type: .system)
+            backButton.frame = CGRect(x: 16, y: yOffset - 5, width: 30, height: 30)
+            backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+            backButton.tintColor = .systemBlue
+            backButton.addTarget(self, action: #selector(self.backButtonTapped), for: .touchUpInside)
+            contentView.addSubview(backButton)
+            
+            // 调整名称标签位置，为返回箭头腾出空间
+            nameLabel.frame = CGRect(x: 50, y: yOffset, width: contentView.bounds.width - 166, height: 30)
             
             // 加载图片
             let imageView = UIImageView(frame: CGRect(x: contentView.bounds.width - 116, y: yOffset, width: 100, height: 100))
@@ -1251,6 +1324,56 @@ class FoodDetailViewControllerImpl: UIViewController, FoodDetailViewControllerPr
             navigationController?.pushViewController(foodDetailVC, animated: true)
         }
     }
+    
+    @objc private func amountTextFieldChanged(_ sender: UITextField) {
+        guard let amountText = sender.text, let amount = Double(amountText) else { return }
+        
+        // 更新自定义数量
+        self.customAmount = amount
+        
+        // 更新热量显示
+        updateCaloriesDisplay()
+    }
+    
+    @objc private func unitButtonTapped(_ sender: UIButton) {
+        // 显示单位选择器
+        guard let unitInfos = foodDetail?.food_unit_infos, !unitInfos.isEmpty else { return }
+        
+        let alertController = UIAlertController(title: "选择单位", message: nil, preferredStyle: .actionSheet)
+        
+        for unitInfo in unitInfos {
+            let unitName = unitInfo.is_standard ? "每100g" : (unitInfo.unit.isEmpty ? "份" : unitInfo.unit)
+            let action = UIAlertAction(title: unitName, style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                
+                // 更新选中的单位信息
+                self.selectedUnitInfo = unitInfo
+                
+                // 更新单位按钮标题
+                sender.setTitle(unitName, for: .normal)
+                
+                // 更新热量显示
+                self.updateCaloriesDisplay()
+            }
+            alertController.addAction(action)
+        }
+        
+        alertController.addAction(UIAlertAction(title: "取消", style: .cancel))
+        
+        present(alertController, animated: true)
+    }
+    
+    private func updateCaloriesDisplay() {
+        guard let selectedUnitInfo = self.selectedUnitInfo else { return }
+        
+        // 计算热量
+        let calories = selectedUnitInfo.calories * self.customAmount
+        
+        // 更新热量显示
+        if let caloriesLabel = view.viewWithTag(302) as? UILabel {
+            caloriesLabel.text = "\(Int(calories)) \(selectedUnitInfo.calories_unit)"
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -1366,54 +1489,8 @@ extension FoodDetailViewControllerImpl {
         present(alert, animated: true)
     }
     
-    @objc private func amountTextFieldChanged(_ sender: UITextField) {
-        guard let amountText = sender.text, let amount = Double(amountText) else { return }
-        
-        // 更新自定义数量
-        self.customAmount = amount
-        
-        // 更新热量显示
-        updateCaloriesDisplay()
-    }
-    
-    @objc private func unitButtonTapped(_ sender: UIButton) {
-        // 显示单位选择器
-        guard let unitInfos = foodDetail?.food_unit_infos, !unitInfos.isEmpty else { return }
-        
-        let alertController = UIAlertController(title: "选择单位", message: nil, preferredStyle: .actionSheet)
-        
-        for unitInfo in unitInfos {
-            let unitName = unitInfo.is_standard ? "每100g" : (unitInfo.unit.isEmpty ? "份" : unitInfo.unit)
-            let action = UIAlertAction(title: unitName, style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                
-                // 更新选中的单位信息
-                self.selectedUnitInfo = unitInfo
-                
-                // 更新单位按钮标题
-                sender.setTitle(unitName, for: .normal)
-                
-                // 更新热量显示
-                self.updateCaloriesDisplay()
-            }
-            alertController.addAction(action)
-        }
-        
-        alertController.addAction(UIAlertAction(title: "取消", style: .cancel))
-        
-        present(alertController, animated: true)
-    }
-    
-    private func updateCaloriesDisplay() {
-        guard let selectedUnitInfo = self.selectedUnitInfo else { return }
-        
-        // 计算热量
-        let calories = selectedUnitInfo.calories * self.customAmount
-        
-        // 更新热量显示
-        if let caloriesLabel = view.viewWithTag(302) as? UILabel {
-            caloriesLabel.text = "\(Int(calories)) \(selectedUnitInfo.calories_unit)"
-        }
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -1478,4 +1555,307 @@ struct FoodUnitInfo: Codable {
     let calories: Double
     let calories_unit: String
     let is_standard: Bool
+}
+
+// 食物搜索响应模型
+struct FoodSearchResponse: Codable {
+    let success: Bool
+    let data: FoodSearchData
+    let request_id: String
+    
+    struct FoodSearchData: Codable {
+        let keyword: String
+        let limit: Int
+        let list: [Food]
+        let page: Int
+        let total: Int
+    }
+}
+
+// 食物搜索结果视图控制器
+class FoodSearchViewController: UIViewController {
+    
+    // MARK: - Properties
+    
+    private let keyword: String
+    private var foods: [Food] = []
+    private var currentPage = 1
+    private var totalPages = 1
+    private var isLoading = false
+    private var hasMoreData = true
+    
+    // MARK: - UI Components
+    
+    // 表格视图
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .systemBackground
+        tableView.separatorStyle = .singleLine
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.register(FoodCell.self, forCellReuseIdentifier: "FoodCellIdentifier")
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
+        return tableView
+    }()
+    
+    // 加载指示器
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
+    // 底部加载指示器
+    private lazy var footerActivityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        indicator.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 50)
+        return indicator
+    }()
+    
+    // 无数据视图
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let imageView = UIImageView(image: UIImage(named: "food_placeholder"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .systemGray3
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let label = UILabel()
+        label.text = "没有找到相关食物"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .systemGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(imageView)
+        view.addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
+            imageView.widthAnchor.constraint(equalToConstant: 60),
+            imageView.heightAnchor.constraint(equalToConstant: 60),
+            
+            label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+        
+        return view
+    }()
+    
+    // MARK: - Lifecycle
+    
+    init(keyword: String) {
+        self.keyword = keyword
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // 设置标题
+        title = "搜索: \(keyword)"
+        
+        // 设置视图
+        view.backgroundColor = .systemBackground
+        
+        // 设置表格
+        view.addSubview(tableView)
+        view.addSubview(activityIndicator)
+        view.addSubview(emptyView)
+        
+        // 设置约束
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            emptyView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            emptyView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        // 添加返回按钮
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped)
+        )
+        
+        // 设置导航栏外观
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .systemBackground
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        }
+        
+        // 设置额外的顶部安全区域边距，避免被自定义导航栏遮挡
+        additionalSafeAreaInsets = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+        
+        // 添加下拉刷新
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        
+        // 加载数据
+        fetchFoods()
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func refreshData() {
+        currentPage = 1
+        hasMoreData = true
+        foods.removeAll()
+        tableView.reloadData()
+        fetchFoods()
+    }
+    
+    // MARK: - Data Fetching
+    
+    private func fetchFoods() {
+        guard !isLoading && hasMoreData else { return }
+        
+        isLoading = true
+        
+        if foods.isEmpty {
+            activityIndicator.startAnimating()
+        } else {
+            tableView.tableFooterView = footerActivityIndicator
+            footerActivityIndicator.startAnimating()
+        }
+        
+        // 对关键词进行URL编码
+        guard let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            showError(message: "搜索关键词无效")
+            return
+        }
+        
+        let url = "https://gourmet.pfcent.com/api/v1/foods/search?keyword=\(encodedKeyword)&page=\(currentPage)&limit=20"
+        let headers: HTTPHeaders = [
+            "Accept": "*/*",
+            "Connection": "keep-alive",
+            "User-Agent": "PostmanRuntime-ApipostRuntime/1.1.0"
+        ]
+        
+        AF.request(url, method: .get, headers: headers)
+            .validate()
+            .responseDecodable(of: FoodSearchResponse.self) { [weak self] response in
+                guard let self = self else { return }
+                
+                self.isLoading = false
+                self.activityIndicator.stopAnimating()
+                self.tableView.refreshControl?.endRefreshing()
+                self.footerActivityIndicator.stopAnimating()
+                self.tableView.tableFooterView = nil
+                
+                switch response.result {
+                case .success(let searchResponse):
+                    if searchResponse.success {
+                        let newFoods = searchResponse.data.list
+                        
+                        // 计算总页数
+                        let total = searchResponse.data.total
+                        let limit = searchResponse.data.limit
+                        self.totalPages = (total + limit - 1) / limit
+                        
+                        // 检查是否还有更多数据
+                        self.hasMoreData = self.currentPage < self.totalPages
+                        
+                        // 更新页码
+                        self.currentPage += 1
+                        
+                        // 更新数据源
+                        if self.currentPage == 2 {
+                            self.foods = newFoods
+                        } else {
+                            self.foods.append(contentsOf: newFoods)
+                        }
+                        
+                        // 更新 UI
+                        self.tableView.reloadData()
+                        self.emptyView.isHidden = !self.foods.isEmpty
+                    } else {
+                        self.showError(message: "搜索食物失败")
+                    }
+                    
+                case .failure(let error):
+                    print("Error searching foods: \(error.localizedDescription)")
+                    self.showError(message: "网络错误，请稍后重试")
+                }
+            }
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func showError(message: String) {
+        let alert = UIAlertController(title: "错误", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "确定", style: .default))
+        present(alert, animated: true)
+    }
+}
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
+extension FoodSearchViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return foods.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FoodCell.reuseIdentifier, for: indexPath) as! FoodCell
+        
+        if indexPath.row < foods.count {
+            let food = foods[indexPath.row]
+            cell.configure(with: food)
+            
+            // 如果滚动到最后一行，加载更多数据
+            if indexPath.row == foods.count - 1 && !isLoading && hasMoreData {
+                fetchFoods()
+            }
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.row < foods.count {
+            let food = foods[indexPath.row]
+            let foodDetailVC = FoodDetailViewControllerImpl()
+            foodDetailVC.configure(with: food.id)
+            navigationController?.pushViewController(foodDetailVC, animated: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100 // 固定高度，也可以使用 UITableView.automaticDimension
+    }
 }
