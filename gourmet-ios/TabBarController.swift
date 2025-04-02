@@ -287,56 +287,56 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    // 动画切换标签页
+    // 执行标签页切换动画
     private func animateToTab(from fromIndex: Int, to toIndex: Int) {
-        // 如果正在执行动画，忽略请求
-        if isAnimating {
-            return
-        }
-        
-        // 设置动画标志
+        // 标记正在执行动画
         isAnimating = true
         
-        guard let fromView = self.viewControllers?[fromIndex].view,
-              let toView = self.viewControllers?[toIndex].view else {
+        // 获取视图控制器
+        guard let fromVC = viewControllers?[fromIndex],
+              let toVC = viewControllers?[toIndex],
+              let fromView = fromVC.view,
+              let toView = toVC.view else {
             isAnimating = false
             return
         }
         
-        // 立即强制更新TabBar的选中状态
-        forceUpdateTabBarItemAppearance(at: toIndex)
+        // 确保目标视图已添加到容器中
+        if toView.superview == nil {
+            view.addSubview(toView)
+            view.sendSubviewToBack(toView)
+        }
         
-        // 设置动画方向
-        let screenWidth = UIScreen.main.bounds.width
-        let direction: CGFloat = toIndex > fromIndex ? 1.0 : -1.0
-        
-        // 将目标视图添加到当前视图层次结构中
-        fromView.superview?.addSubview(toView)
-        
-        // 设置目标视图的初始位置（屏幕外）
-        toView.frame = fromView.frame
-        toView.transform = CGAffineTransform(translationX: screenWidth * direction, y: 0)
+        // 设置初始位置
+        let screenWidth = view.frame.width
+        let direction: CGFloat = toIndex > fromIndex ? 1 : -1
+        toView.frame = fromView.frame.offsetBy(dx: direction * screenWidth, dy: 0)
         
         // 执行动画
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            // 将当前视图移出屏幕
-            fromView.transform = CGAffineTransform(translationX: -screenWidth * direction, y: 0)
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut, .allowUserInteraction], animations: {
+            // 移动视图
+            fromView.frame = fromView.frame.offsetBy(dx: -direction * screenWidth, dy: 0)
+            toView.frame = fromView.frame.offsetBy(dx: direction * screenWidth, dy: 0)
             
-            // 将目标视图移入屏幕
-            toView.transform = .identity
+            // 更新自定义TabBar的选中索引
+            self.customTabBar?.setSelectedIndex(toIndex)
             
-        }, completion: { _ in
-            // 重置变换
-            fromView.transform = .identity
-            toView.transform = .identity
+        }) { [weak self] _ in
+            guard let self = self else { return }
             
-            // 移除视图并更新选中索引
-            toView.removeFromSuperview()
+            // 更新选中的视图控制器
             self.selectedIndex = toIndex
             
-            // 重置动画标志
+            // 重置视图位置
+            fromView.frame = self.view.bounds
+            toView.frame = self.view.bounds
+            
+            // 强制更新TabBar项的外观
+            self.forceUpdateTabBarItemAppearance(at: toIndex)
+            
+            // 标记动画完成
             self.isAnimating = false
-        })
+        }
     }
     
     // UITabBarControllerDelegate method
