@@ -291,7 +291,7 @@ class PostCell: UITableViewCell {
         // 设置点赞按钮状态
         updateLikeButtonState(postId: post.id, likeCount: post.like_count)
         
-        // 检查当前用户是否有权限删除
+        // 检查当前用户是否有权限删除 - 修复方式: 使用isTokenValid确保用户已登录
         if let currentUser = User.load(), currentUser.uuid == post.user.uuid {
             deleteButton.isHidden = false
         } else {
@@ -333,8 +333,61 @@ class PostCell: UITableViewCell {
     }
     
     @objc private func likeButtonTapped() {
-        guard let post = post else { return }
-        delegate?.postCell(self, didTapLikeButton: post)
+        // 确保有帖子数据
+        guard let post = self.post else { return }
+        
+        // 检查用户是否登录
+        guard User.isTokenValid() else {
+            delegate?.showErrorMessage("请先登录")
+            return
+        }
+        
+        // 当前点赞状态
+        let isCurrentlyLiked = LikeManager.shared.isPostLiked(post.id)
+        
+        // 构建请求URL
+        var urlComponents = URLComponents(string: "https://gourmet.pfcent.com/api/v1/community/posts/\(post.id)/like")!
+        
+        // 构建请求头
+        var headers: HTTPHeaders = [
+            "User-Agent": "Gourmet iOS"
+        ]
+        
+        // 添加 token 到请求头
+        if let token = UserDefaults.standard.string(forKey: UserDefaultsKeys.token) {
+            headers["Authorization"] = "Bearer \(token)"
+        }
+        
+        // 发送请求
+        AF.request(urlComponents.url!, method: isCurrentlyLiked ? .delete : .put, headers: headers)
+            .responseDecodable(of: LikeResponse.self) { [weak self] response in
+                guard let self = self, let post = self.post else { return }
+                
+                switch response.result {
+                case .success(let likeResponse):
+                    // 更新点赞状态
+                    LikeManager.shared.setPostLiked(post.id, liked: !isCurrentlyLiked)
+                    
+                    let likeCount = likeResponse.data.like_count
+                    print("点赞操作成功: postId=\(post.id), 新状态=\(!isCurrentlyLiked ? "已点赞" : "未点赞"), 点赞数=\(likeCount)")
+                    
+                    // 更新UI - 确保在主线程更新UI
+                    DispatchQueue.main.async {
+                        self.likeButton.setTitle("\(likeCount)", for: .normal)
+                        if isCurrentlyLiked {
+                            self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                            self.likeButton.tintColor = .systemBlue
+                        } else {
+                            self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                            self.likeButton.tintColor = .systemRed
+                        }
+                    }
+                    
+                case .failure(let error):
+                    print("点赞操作失败: \(error)")
+                    self.delegate?.showErrorMessage("点赞操作失败")
+                }
+            }
     }
     
     // 更新点赞按钮状态
@@ -493,6 +546,10 @@ class CommunityViewController: UIViewController {
         // 清空现有数据
         posts = []
         
+        // 确保获取最新的用户状态
+        // 这将刷新用户令牌状态并触发相关通知
+        _ = User.isTokenValid()
+        
         // 加载新数据
         loadPosts()
         
@@ -560,6 +617,10 @@ class CommunityViewController: UIViewController {
                     
                     self.hasMoreData = self.posts.count < postResponse.data.total
                     self.currentPage += 1
+                    
+                    // 强制获取最新的用户状态并更新UI
+                    _ = User.isTokenValid()
+                    
                     self.tableView.reloadData()
                     
                 case .failure(let error):
@@ -671,6 +732,11 @@ class CommunityViewController: UIViewController {
     }
     
     private func deletePost(at indexPath: IndexPath) {
+        // 安全检查，确保索引有效
+        guard indexPath.row < posts.count else {
+            return
+        }
+        
         let post = posts[indexPath.row]
         
         // 检查用户是否有权限删除
@@ -856,6 +922,12 @@ extension CommunityViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+        
+        // 安全检查，确保索引有效
+        guard indexPath.row < posts.count else {
+            return cell
+        }
+        
         let post = posts[indexPath.row]
         
         cell.configure(with: post)
@@ -871,6 +943,12 @@ extension CommunityViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        // 安全检查，确保索引有效
+        guard indexPath.row < posts.count else {
+            return
+        }
+        
         let post = posts[indexPath.row]
         
         showPostDetail(post)
@@ -917,7 +995,7 @@ extension CommunityViewController: PostCellDelegate {
         print("点击点赞按钮: postId=\(post.id), 当前状态=\(isCurrentlyLiked ? "已点赞" : "未点赞"), 操作=\(action)")
         
         // 调用点赞/取消点赞接口
-        toggleLikePost(postId: post.id, action: action) { [weak self] result in
+        toggleLikePost(postId: post.id, action: action) { [weak self, post, weak cell] result in
             switch result {
             case .success(let likeCount):
                 // 更新点赞状态
@@ -927,7 +1005,7 @@ extension CommunityViewController: PostCellDelegate {
                 
                 // 更新UI - 确保在主线程更新UI
                 DispatchQueue.main.async {
-                    cell.updateLikeCount(likeCount)
+                    cell?.updateLikeCount(likeCount)
                     print("UI更新完成: 点赞数=\(likeCount)")
                 }
                 
@@ -961,7 +1039,9 @@ extension CommunityViewController: PostCellDelegate {
         AF.request("https://gourmet.pfcent.com/api/v1/users/post/favorite/\(postId)/\(action)", 
                    method: .put, 
                    headers: headers)
-            .responseDecodable(of: LikeResponse.self) { response in
+            .responseDecodable(of: LikeResponse.self) { [weak self] response in
+                guard let self = self else { return }
+                
                 switch response.result {
                 case .success(let likeResponse):
                     print("点赞响应: success=\(likeResponse.success), likeCount=\(likeResponse.data.like_count)")
@@ -1472,7 +1552,7 @@ class DetailPostViewController: UIViewController {
         }
         
         // 调用点赞/取消点赞接口
-        toggleLikePost(postId: post.id, action: action) { [weak self] result in
+        toggleLikePost(postId: post.id, action: action) { [weak self, post] result in
             switch result {
             case .success(let likeCount):
                 // 更新点赞状态
@@ -1547,7 +1627,7 @@ class DetailPostViewController: UIViewController {
         AF.request("https://gourmet.pfcent.com/api/v1/users/post/favorite/\(postId)/\(action)", 
                    method: .put, 
                    headers: headers)
-            .responseDecodable(of: LikeResponse.self) { response in
+            .responseDecodable(of: LikeResponse.self) { [weak self] response in
                 switch response.result {
                 case .success(let likeResponse):
                     print("点赞响应: success=\(likeResponse.success), likeCount=\(likeResponse.data.like_count)")
@@ -1755,7 +1835,7 @@ extension DetailPostViewController: PostCellDelegate {
         print("点击点赞按钮: postId=\(post.id), 当前状态=\(isCurrentlyLiked ? "已点赞" : "未点赞"), 操作=\(action)")
         
         // 调用点赞/取消点赞接口
-        toggleLikePost(postId: post.id, action: action) { [weak self, weak cell] result in
+        toggleLikePost(postId: post.id, action: action) { [weak self, post, weak cell] result in
             switch result {
             case .success(let likeCount):
                 // 更新点赞状态
