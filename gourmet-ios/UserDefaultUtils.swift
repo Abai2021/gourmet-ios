@@ -10,6 +10,7 @@ import UIKit
 struct UserDefaultsKeys {
     static let user = "com.gourmet.user"
     static let deviceId = "com.gourmet.deviceId"
+    static let token = "token"
 }
 
 class UserDefaultUtils {
