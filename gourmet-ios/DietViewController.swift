@@ -243,9 +243,9 @@ class FoodItemCell: UITableViewCell {
         contentView.addSubview(deleteButton)
         
         // 添加营养信息
-        nutritionStackView.addArrangedSubview(proteinLabel)
-        nutritionStackView.addArrangedSubview(fatLabel)
-        nutritionStackView.addArrangedSubview(carbLabel)
+        // nutritionStackView.addArrangedSubview(proteinLabel)
+        // nutritionStackView.addArrangedSubview(fatLabel)
+        // nutritionStackView.addArrangedSubview(carbLabel)
         contentView.addSubview(nutritionStackView)
         
         // 设置约束
