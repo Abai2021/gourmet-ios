@@ -160,10 +160,10 @@ class LoginService {
                         
                         // 创建用户对象
                         let user = User(
-                            id: userData.id,
+                            id: 0,
                             nickname: userData.nickname,
                             avatar: userData.avatar.isEmpty ? nil : userData.avatar,
-                            email: userData.email.isEmpty ? nil : userData.email,
+                            email: nil,
                             gender: userData.gender,
                             region: userData.region.isEmpty ? nil : userData.region,
                             uuid: nil
@@ -231,10 +231,10 @@ class LoginService {
                         
                         // 创建用户对象
                         let user = User(
-                            id: User.current?.id ?? 0,
+                            id: 0,
                             nickname: userData.nickname,
                             avatar: userData.avatar.isEmpty ? nil : userData.avatar,
-                            email: User.current?.email,
+                            email: nil,
                             gender: userData.gender,
                             region: userData.region.isEmpty ? nil : userData.region,
                             uuid: userData.uuid
@@ -273,7 +273,7 @@ class LoginService {
                     if let afError = error.asAFError,
                        let response = afError.responseCode,
                        response == 401 {
-                        // 清除无效的 token
+                        // 401 错误，提示用户重新登录
                         User.logout()
                         
                         let error = NSError(domain: "com.gourmet.error", code: 401, userInfo: [NSLocalizedDescriptionKey: "登录已过期，请重新登录"])
@@ -294,6 +294,8 @@ enum SideMenuItem: String, CaseIterable {
     case userAgreement = "用户协议"
     case version = "版本信息"
     case contactUs = "联系我们"
+    case editProfile = "编辑用户信息"
+    case logout = "退出登录"
     
     var iconName: String? {
         switch self {
@@ -303,6 +305,10 @@ enum SideMenuItem: String, CaseIterable {
             return "info.circle"
         case .contactUs:
             return "envelope"
+        case .editProfile:
+            return "pencil.circle"
+        case .logout:
+            return "arrow.right.square"
         }
     }
     
@@ -314,6 +320,10 @@ enum SideMenuItem: String, CaseIterable {
             return "版本信息"
         case .contactUs:
             return "联系我们"
+        case .editProfile:
+            return "编辑用户信息"
+        case .logout:
+            return "退出登录"
         }
     }
 }
@@ -405,9 +415,6 @@ class SideMenuViewController: UIViewController {
         return tableView
     }()
     
-    // 菜单项数据
-    private let menuItems = SideMenuItem.allCases
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -424,14 +431,17 @@ class SideMenuViewController: UIViewController {
     // 检查登录状态
     private func checkLoginStatus() {
         if User.isTokenValid() {
-            // Token 有效，获取用户信息
+            // 用户已登录且 Token 有效，获取用户信息
             fetchUserInfo()
         } else if let user = User.load() {
             // 有本地用户信息但 token 无效，显示用户信息但标记需要重新登录
-            isLoggedIn = false
-            userName = user.name
-            userEmail = user.email
+            isLoggedIn = true
+            userName = user.nickname
+            userEmail = user.uuid
             updateUserInfoDisplay()
+            
+            // 刷新表格视图以显示退出登录按钮
+            tableView.reloadData()
             
             // 提示用户重新登录
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -439,6 +449,13 @@ class SideMenuViewController: UIViewController {
                 alert.addAction(UIAlertAction(title: "确定", style: .default))
                 self.present(alert, animated: true)
             }
+        } else {
+            // 没有用户信息，确保登录状态为 false
+            isLoggedIn = false
+            userName = nil
+            userEmail = nil
+            updateUserInfoDisplay()
+            tableView.reloadData()
         }
     }
     
@@ -476,6 +493,9 @@ class SideMenuViewController: UIViewController {
                         self?.userName = user.name
                         self?.userEmail = user.email
                         self?.updateUserInfoDisplay()
+                        
+                        // 刷新表格视图以显示退出登录按钮
+                        self?.tableView.reloadData()
                     }
                 }
             }
@@ -554,6 +574,9 @@ class SideMenuViewController: UIViewController {
             userName = user.name
             userEmail = user.email
             updateUserInfoDisplay()
+            
+            // 刷新表格视图以显示退出登录按钮
+            tableView.reloadData()
         }
     }
     
@@ -563,6 +586,9 @@ class SideMenuViewController: UIViewController {
         userName = nil
         userEmail = nil
         updateUserInfoDisplay()
+        
+        // 刷新表格视图以隐藏退出登录按钮
+        tableView.reloadData()
     }
     
     // 更新用户信息显示
@@ -570,7 +596,7 @@ class SideMenuViewController: UIViewController {
         if isLoggedIn, let name = userName {
             userNameLabel.text = name
             
-            if let uuid = User.current?.uuid, !uuid.isEmpty {
+            if let user = User.load(), let uuid = user.uuid, !uuid.isEmpty {
                 userIdLabel.text = "UUID: \(uuid)"
             } else if let email = userEmail, !email.isEmpty {
                 userIdLabel.text = email
@@ -578,7 +604,7 @@ class SideMenuViewController: UIViewController {
                 userIdLabel.text = "Apple 用户"
             }
             
-            if let avatar = User.current?.avatar, !avatar.isEmpty, let url = URL(string: avatar) {
+            if let user = User.load(), let avatar = user.avatar, !avatar.isEmpty, let url = URL(string: avatar) {
                 // 这里可以添加图片加载库，如 SDWebImage 或 Kingfisher
                 // 简单起见，这里不实现图片加载
                 userAvatarImageView.image = UIImage(systemName: "person.circle.fill")
@@ -655,6 +681,9 @@ class SideMenuViewController: UIViewController {
         let alert = UIAlertController(title: "登录成功", message: "欢迎回来，\(user.name)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "确定", style: .default))
         present(alert, animated: true)
+        
+        // 刷新表格视图以显示退出登录按钮
+        tableView.reloadData()
     }
     
     @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
@@ -689,21 +718,67 @@ class SideMenuViewController: UIViewController {
         let alert = UIAlertController(title: "已注销", message: "您已成功退出登录", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "确定", style: .default))
         present(alert, animated: true)
+        
+        // 刷新表格视图
+        tableView.reloadData()
     }
 }
 
-// MARK: - UITableViewDelegate, UITableViewDataSource
 extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuItems.count
+        // 如果用户未登录，不显示退出登录按钮和编辑用户信息按钮
+        if !isLoggedIn && section == 0 {
+            return SideMenuItem.allCases.count - 2
+        }
+        return section == 0 ? SideMenuItem.allCases.count - 2 : 2
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // 如果用户已登录，添加一个额外的部分用于退出登录按钮和编辑用户信息按钮
+        return isLoggedIn ? 2 : 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCell", for: indexPath)
-        let menuItem = menuItems[indexPath.row]
         
-        // 配置单元格
+        // 根据section选择不同的菜单项
+        let menuItem: SideMenuItem
+        if indexPath.section == 0 {
+            // 主菜单项（除了退出登录和编辑用户信息）
+            let filteredItems = SideMenuItem.allCases.filter { $0 != .logout && $0 != .editProfile }
+            menuItem = filteredItems[indexPath.row]
+        } else {
+            // 用户相关操作（编辑用户信息和退出登录）
+            let userItems = [SideMenuItem.editProfile, SideMenuItem.logout]
+            menuItem = userItems[indexPath.row]
+            
+            // 为退出登录按钮设置红色
+            if menuItem == .logout {
+                var content = cell.defaultContentConfiguration()
+                content.text = menuItem.title
+                content.textProperties.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+                content.textProperties.color = UIColor.systemRed
+                
+                if let iconName = menuItem.iconName {
+                    content.image = UIImage(systemName: iconName)
+                    content.imageProperties.tintColor = UIColor.systemRed
+                }
+                
+                cell.contentConfiguration = content
+                cell.backgroundColor = Colors.background
+                cell.selectionStyle = .none
+                
+                let selectedView = UIView()
+                selectedView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.1)
+                selectedView.layer.cornerRadius = 8
+                cell.selectedBackgroundView = selectedView
+                
+                return cell
+            }
+        }
+        
+        // 配置常规菜单项单元格
         var content = cell.defaultContentConfiguration()
         content.text = menuItem.title
         content.textProperties.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -732,7 +807,28 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let menuItem = menuItems[indexPath.row]
+        let menuItem: SideMenuItem
+        
+        if indexPath.section == 0 {
+            let filteredItems = SideMenuItem.allCases.filter { $0 != .logout && $0 != .editProfile }
+            menuItem = filteredItems[indexPath.row]
+        } else {
+            let userItems = [SideMenuItem.editProfile, SideMenuItem.logout]
+            menuItem = userItems[indexPath.row]
+            
+            // 如果选择了退出登录，执行退出操作
+            if menuItem == .logout {
+                handleLogout()
+                return
+            }
+            
+            // 如果选择了编辑用户信息，执行编辑操作
+            if menuItem == .editProfile {
+                handleEditProfile()
+                return
+            }
+        }
+        
         delegate?.didSelectMenuItem(menuItem)
         
         // 添加点击反馈
@@ -747,6 +843,182 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 56
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 1 {
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 40))
+            headerView.backgroundColor = Colors.background
+            
+            let separatorView = UIView(frame: CGRect(x: 16, y: 0, width: tableView.bounds.width - 32, height: 1))
+            separatorView.backgroundColor = Colors.separator.withAlphaComponent(0.5)
+            headerView.addSubview(separatorView)
+            
+            return headerView
+        }
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 1 ? 40 : 0
+    }
+    
+    // 处理退出登录
+    private func handleLogout() {
+        let alert = UIAlertController(title: "退出登录", message: "确定要退出当前账号吗？", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "确定", style: .destructive) { [weak self] _ in
+            // 执行退出登录操作
+            User.logout()
+            
+            // 发送退出登录通知
+            NotificationCenter.default.post(name: Notification.Name("com.gourmet.userLoggedOut"), object: nil)
+            
+            // 更新UI
+            self?.isLoggedIn = false
+            self?.userName = nil
+            self?.userEmail = nil
+            self?.updateUserInfoDisplay()
+            
+            // 刷新表格视图
+            self?.tableView.reloadData()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func handleEditProfile() {
+        // 只有在用户登录状态下才能编辑用户信息
+        guard isLoggedIn else {
+            let alert = UIAlertController(title: "提示", message: "请先登录", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "确定", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        // 创建一个弹窗用于编辑用户昵称
+        let alert = UIAlertController(title: "编辑用户信息", message: "请输入新的昵称", preferredStyle: .alert)
+        
+        // 添加文本输入框
+        alert.addTextField { textField in
+            textField.placeholder = "昵称"
+            textField.text = self.userName
+        }
+        
+        // 添加取消按钮
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
+        
+        // 添加确定按钮
+        alert.addAction(UIAlertAction(title: "确定", style: .default) { [weak self] _ in
+            guard let self = self,
+                  let nickname = alert.textFields?.first?.text,
+                  !nickname.isEmpty else {
+                return
+            }
+            
+            // 显示加载指示器
+            let loadingAlert = UIAlertController(title: nil, message: "正在更新用户信息...", preferredStyle: .alert)
+            let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+            loadingIndicator.hidesWhenStopped = true
+            loadingIndicator.style = .medium
+            loadingIndicator.startAnimating()
+            loadingAlert.view.addSubview(loadingIndicator)
+            self.present(loadingAlert, animated: true)
+            
+            // 调用服务器接口更新用户信息
+            self.updateUserProfile(nickname: nickname) { success, error in
+                // 关闭加载指示器
+                DispatchQueue.main.async {
+                    loadingAlert.dismiss(animated: true) {
+                        if success {
+                            // 更新成功
+                            let successAlert = UIAlertController(title: "成功", message: "用户信息更新成功", preferredStyle: .alert)
+                            successAlert.addAction(UIAlertAction(title: "确定", style: .default))
+                            self.present(successAlert, animated: true)
+                        } else {
+                            // 更新失败
+                            let errorAlert = UIAlertController(title: "失败", message: error ?? "用户信息更新失败", preferredStyle: .alert)
+                            errorAlert.addAction(UIAlertAction(title: "确定", style: .default))
+                            self.present(errorAlert, animated: true)
+                        }
+                    }
+                }
+            }
+        })
+        
+        // 显示弹窗
+        present(alert, animated: true)
+    }
+}
+
+// MARK: - updateUserProfile
+extension SideMenuViewController {
+    private func updateUserProfile(nickname: String, completion: @escaping (Bool, String?) -> Void) {
+        // 检查 token 是否有效
+        guard User.isTokenValid(),
+              let token = UserDefaults.standard.string(forKey: UserDefaultsKeys.token) else {
+            completion(false, "登录已过期，请重新登录")
+            return
+        }
+        
+        // 构建请求 URL
+        let urlString = "https://gourmet.pfcent.com/api/v1/users"
+        guard let url = URL(string: urlString) else {
+            completion(false, "无效的 URL")
+            return
+        }
+        
+        // 构建请求参数
+        let parameters: [String: Any] = [
+            "nickname": nickname
+        ]
+        
+        // 构建请求头
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(token)",
+            "User-Agent": "Gourmet iOS",
+            "X-BUNDLE-ID": "com.abai.test"
+        ]
+        
+        // 发送请求
+        AF.request(url, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .responseData { response in
+                switch response.result {
+                case .success(let data):
+                    // 尝试解析响应
+                    if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                       let success = json["success"] as? Bool,
+                       success,
+                       let userData = json["data"] as? [String: Any],
+                       let nickname = userData["nickname"] as? String {
+                        
+                        // 更新本地用户信息
+                        if let user = User.load() {
+                            var updatedUser = user
+                            updatedUser.nickname = nickname
+                            updatedUser.save()
+                            
+                            // 更新 UI 显示
+                            self.userName = nickname
+                            self.updateUserInfoDisplay()
+                            
+                            // 刷新表格视图
+                            self.tableView.reloadData()
+                        }
+                        
+                        completion(true, nil)
+                    } else if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                              let message = json["message"] as? String {
+                        completion(false, message)
+                    } else {
+                        completion(false, "响应解析失败")
+                    }
+                case .failure(let error):
+                    completion(false, error.localizedDescription)
+                }
+            }
     }
 }
 

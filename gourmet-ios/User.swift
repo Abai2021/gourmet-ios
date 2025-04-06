@@ -79,7 +79,39 @@ class User: Codable {
         self.gender = auth.gender
         self.region = auth.region
         self.isLoggedIn = true
-        self.saveToCurrent()
+    }
+    
+    // 检查 token 是否有效
+    static func isTokenValid() -> Bool {
+        guard let tokenExpiryString = UserDefaults.standard.string(forKey: UserDefaultsKeys.tokenExpiry),
+              let token = UserDefaults.standard.string(forKey: UserDefaultsKeys.token),
+              !token.isEmpty else {
+            return false
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
+        guard let expiryDate = dateFormatter.date(from: tokenExpiryString) else {
+            return false
+        }
+        
+        return expiryDate > Date()
+    }
+    
+    // 从 UserDefaults 加载用户信息
+    static func load() -> User? {
+        guard let userData = UserDefaults.standard.data(forKey: UserDefaultsKeys.user) else {
+            return nil
+        }
+        
+        do {
+            let user = try JSONDecoder().decode(User.self, from: userData)
+            return user
+        } catch {
+            print("Error decoding user: \(error)")
+            return nil
+        }
     }
     
     // Update with user profile
@@ -97,6 +129,12 @@ class User: Codable {
         self.accessToken = ""
         self.isLoggedIn = false
         self.saveToCurrent()
+    }
+    
+    // Check if token is valid
+    static func isTokenValid() -> Bool {
+        let user = User.current()
+        return user.isLoggedIn && !user.accessToken.isEmpty
     }
     
     class func isLogin() -> Bool {

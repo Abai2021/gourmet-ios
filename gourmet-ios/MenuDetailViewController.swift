@@ -74,6 +74,11 @@ class MenuDetailViewController: UIViewController {
             centerLabel.text = "当前版本: 1.0.0"
         case .contactUs:
             centerLabel.text = "联系邮箱: support@gourmet.com"
+        case .editProfile:
+            centerLabel.text = "编辑用户信息"
+        case .logout:
+            // 退出登录不会显示在此视图中，但需要添加此情况以使 switch 完整
+            centerLabel.text = ""
         }
     }
     
@@ -92,6 +97,12 @@ class MenuDetailViewController: UIViewController {
         case .contactUs:
             topColor = UIColor(red: 0.8, green: 0.4, blue: 0.6, alpha: 1.0).cgColor
             bottomColor = UIColor(red: 0.6, green: 0.2, blue: 0.4, alpha: 1.0).cgColor
+        case .editProfile:
+            topColor = UIColor(red: 0.7, green: 0.5, blue: 0.9, alpha: 1.0).cgColor
+            bottomColor = UIColor(red: 0.5, green: 0.3, blue: 0.7, alpha: 1.0).cgColor
+        case .logout:
+            topColor = UIColor(red: 0.4, green: 0.6, blue: 0.8, alpha: 1.0).cgColor
+            bottomColor = UIColor(red: 0.2, green: 0.4, blue: 0.7, alpha: 1.0).cgColor
         }
         
         gradientLayer.colors = [topColor, bottomColor]
