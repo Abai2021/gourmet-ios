@@ -869,7 +869,7 @@ class DietAPI {
                     if dietResponse.success {
                         completion(.success(dietResponse.data ?? []))
                     } else {
-                        completion(.failure(NSError(domain: "com.gourmet.error", code: -2, userInfo: [NSLocalizedDescriptionKey: "API returned success=false"])))
+                        completion(.failure(NSError(domain: "com.gourmet.error", code: -2, userInfo: [NSLocalizedDescriptionKey: "API returned success=falsediet\(dietResponse)"])))
                     }
                 case .failure(let error):
                     completion(.failure(error))
